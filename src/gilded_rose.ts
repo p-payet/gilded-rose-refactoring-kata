@@ -9,16 +9,15 @@ interface ItemInterface {
 // We altered the Item class, I don't really see the point of this rule.
 // The goblin can go to hell.
 export class Item implements ItemInterface {
-  static maxQuality = 50;
+  static readonly MAX_QUALITY = 50;
+  static readonly MIN_QUALITY = 0;
 
   constructor(
     public name: string,
     public sellIn: number,
     public quality: number
   ) {
-    this.name = name;
-    this.sellIn = sellIn;
-    this.quality = quality > 0 ? quality : 0;
+    this.quality = Math.max(quality, Item.MIN_QUALITY);
   }
 
   public updateQuality() {
@@ -32,7 +31,7 @@ export class Item implements ItemInterface {
   }
 
   public decreaseQuality() {
-    if (this.quality > 0) {
+    if (this.quality > Item.MIN_QUALITY) {
       this.quality--;
     }
   }
@@ -44,7 +43,7 @@ export class Item implements ItemInterface {
   }
 
   get isQualityInferiorToMaxQuality(): boolean {
-    return this.quality < Item.maxQuality;
+    return this.quality < Item.MAX_QUALITY;
   }
 
   get isSellInExpired() {
@@ -86,7 +85,7 @@ export class BackstagePasses extends Item {
     }
 
     if (this.isSellInExpired) {
-      this.quality = 0;
+      this.quality = Item.MIN_QUALITY;
     }
   }
 }
