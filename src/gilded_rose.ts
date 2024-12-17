@@ -52,6 +52,7 @@ export class Item implements ItemInterface {
 }
 
 export class Sulfuras extends Item {
+  // Legendary item, quality and sellIn never change
   public override updateQuality() {}
 }
 
