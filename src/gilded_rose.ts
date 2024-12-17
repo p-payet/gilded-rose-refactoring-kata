@@ -6,10 +6,16 @@ interface ItemInterface {
   updateQuality(): void;
 }
 
+// We altered the Item class, I don't really see the point of this rule.
+// The goblin can go to hell.
 export class Item implements ItemInterface {
   static maxQuality = 50;
 
-  constructor(public name: string, public sellIn: number, public quality: number) {
+  constructor(
+    public name: string,
+    public sellIn: number,
+    public quality: number
+  ) {
     this.name = name;
     this.sellIn = sellIn;
     this.quality = quality > 0 ? quality : 0;
@@ -21,7 +27,7 @@ export class Item implements ItemInterface {
     this.decreaseQuality();
 
     if (this.isSellInExpired) {
-      this.decreaseQuality()
+      this.decreaseQuality();
     }
   }
 
@@ -47,7 +53,11 @@ export class Item implements ItemInterface {
 }
 
 export class Sulfuras extends Item {
-  constructor(public name: string, public sellIn: number, public quality: number) {
+  constructor(
+    public name: string,
+    public sellIn: number,
+    public quality: number
+  ) {
     super(name, sellIn, quality);
   }
 
@@ -55,7 +65,11 @@ export class Sulfuras extends Item {
 }
 
 export class AgedBrie extends Item {
-  constructor(public name: string, public sellIn: number, public quality: number) {
+  constructor(
+    public name: string,
+    public sellIn: number,
+    public quality: number
+  ) {
     super(name, sellIn, quality);
   }
 
@@ -74,7 +88,11 @@ export class BackstagePasses extends Item {
   private sellInFiveDays = 5;
   private sellInTenDays = 10;
 
-  constructor(public name: string, public sellIn: number, public quality: number) {
+  constructor(
+    public name: string,
+    public sellIn: number,
+    public quality: number
+  ) {
     super(name, sellIn, quality);
   }
 
@@ -98,7 +116,11 @@ export class BackstagePasses extends Item {
 }
 
 export class Conjured extends Item {
-  constructor(public name: string, public sellIn: number, public quality: number) {
+  constructor(
+    public name: string,
+    public sellIn: number,
+    public quality: number
+  ) {
     super(name, sellIn, quality);
   }
 
@@ -119,12 +141,12 @@ export class Conjured extends Item {
 }
 
 export class Shop {
-  constructor(public items: Array<ItemInterface> = []){
+  constructor(public items: Array<ItemInterface> = []) {
     this.items = items;
   }
 
   updateQuality() {
-    this.items.forEach(item => item.updateQuality());
+    this.items.forEach((item) => item.updateQuality());
 
     return this.items;
   }
