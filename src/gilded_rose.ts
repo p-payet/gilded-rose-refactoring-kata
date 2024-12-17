@@ -53,26 +53,10 @@ export class Item implements ItemInterface {
 }
 
 export class Sulfuras extends Item {
-  constructor(
-    public name: string,
-    public sellIn: number,
-    public quality: number
-  ) {
-    super(name, sellIn, quality);
-  }
-
   public override updateQuality() {}
 }
 
 export class AgedBrie extends Item {
-  constructor(
-    public name: string,
-    public sellIn: number,
-    public quality: number
-  ) {
-    super(name, sellIn, quality);
-  }
-
   public override updateQuality() {
     this.sellIn--;
 
@@ -87,14 +71,6 @@ export class AgedBrie extends Item {
 export class BackstagePasses extends Item {
   private sellInFiveDays = 5;
   private sellInTenDays = 10;
-
-  constructor(
-    public name: string,
-    public sellIn: number,
-    public quality: number
-  ) {
-    super(name, sellIn, quality);
-  }
 
   public override updateQuality() {
     this.sellIn--;
@@ -116,14 +92,6 @@ export class BackstagePasses extends Item {
 }
 
 export class Conjured extends Item {
-  constructor(
-    public name: string,
-    public sellIn: number,
-    public quality: number
-  ) {
-    super(name, sellIn, quality);
-  }
-
   public override updateQuality() {
     this.sellIn--;
 
