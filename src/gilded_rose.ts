@@ -63,22 +63,21 @@ export class AgedBrie extends Item {
 }
 
 export class BackstagePasses extends Item {
-  private sellInFiveDays = 5;
-  private sellInTenDays = 10;
-
   public override updateQuality() {
+    if (this.isSellInExpired()) {
+      this.quality = Item.MIN_QUALITY; // Becomes worthless after the event
+
+      return;
+    }
+
     this.increaseQuality();
 
-    if (this.sellIn <= this.sellInTenDays) {
+    if (this.sellIn <= 10) {
       this.increaseQuality();
     }
 
-    if (this.sellIn <= this.sellInFiveDays) {
+    if (this.sellIn <= 5) {
       this.increaseQuality();
-    }
-
-    if (this.isSellInExpired()) {
-      this.quality = Item.MIN_QUALITY;
     }
   }
 }
