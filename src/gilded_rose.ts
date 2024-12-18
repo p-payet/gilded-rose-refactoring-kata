@@ -48,7 +48,7 @@ export class Item implements ItemInterface {
 }
 
 export class Sulfuras extends Item {
-  protected override MAX_QUALITY = 80;
+  protected override readonly MAX_QUALITY = 80;
 
   constructor(
     public name: string,
