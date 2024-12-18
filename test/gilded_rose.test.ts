@@ -1,8 +1,30 @@
 import { describe, it, expect } from '@jest/globals';
-import { Item, AgedBrie, BackstagePasses, Sulfuras, Conjured, Shop } from "../src/gilded_rose";
+import {
+  Item,
+  AgedBrie,
+  BackstagePasses,
+  Sulfuras,
+  Conjured,
+  Shop,
+} from "../src/gilded_rose";
+
+const runSimulation = (items: Array<Item>, days: number): string => {
+  const shop = new Shop(items);
+  let output = "";
+
+  for (let day = 0; day <= days; day++) {
+    output += `-------- day ${day} --------\n`;
+    output += "name, sellIn, quality\n";
+    items.forEach(item => output += `${item.name}, ${item.sellIn}, ${item.quality}\n`);
+    shop.decreaseSellIn();
+    output += "\n";
+  }
+
+  return output;
+}
 
 describe("Gilded Rose", () => {
-  // Approval (a.k.a: Golden Master) Testing
+  // Approval Testing (a.k.a: Golden Master)
   it("should match snapshot", () => {
     const items = [
       new Item("+5 Dexterity Vest", 10, 20),
@@ -15,18 +37,7 @@ describe("Gilded Rose", () => {
       new BackstagePasses("Backstage passes to a TAFKAL80ETC concert", 5, 49),
       new Conjured("Conjured Mana Cake", 3, 6),
     ];
-    const gildedRose = new Shop(items);
-    const days = 30;
-
-    let output = "";
-
-    for (let day = 0; day <= days; day++) {
-      output += `-------- day ${day} --------\n`;
-      output += "name, sellIn, quality\n";
-      items.forEach(item => output += `${item.name}, ${item.sellIn}, ${item.quality}\n`);
-      gildedRose.decreaseSellIn();
-      output += "\n";
-    }
+    const output = runSimulation(items, 30);
 
     expect(output).toMatchSnapshot();
   });
