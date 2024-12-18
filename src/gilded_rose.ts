@@ -83,6 +83,7 @@ export class BackstagePasses extends Item {
 }
 
 export class Conjured extends Item {
+  // Degrades in quality twice as fast
   public override updateQuality() {
     this.decreaseQuality(2);
 
@@ -93,9 +94,7 @@ export class Conjured extends Item {
 }
 
 export class Shop {
-  constructor(public items: Array<ItemInterface> = []) {
-    this.items = items;
-  }
+  constructor(public items: Array<ItemInterface> = []) {}
 
   updateSellIn() {
     this.items.forEach((item) => item.updateSellIn());
