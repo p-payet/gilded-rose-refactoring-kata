@@ -179,6 +179,17 @@ describe("Gilded Rose Shop", () => {
       expect(items[1].quality).toBe(19);
     });
 
+    it("should degrade in quality four times as fast as normal items, when sellIn is below 0", () => {
+      const shop = new Shop([
+        conjuredItemFactory(0, 20),
+        normalItemFactory(0, 20),
+      ]);
+      const items = shop.decreaseSellIn();
+
+      expect(items[0].quality).toBe(16);
+      expect(items[1].quality).toBe(18);
+    });
+
     it("should never lower quality below 0", () => {
       const shop = new Shop([conjuredItemFactory(10, 0)]);
       const items = shop.decreaseSellIn();
