@@ -29,7 +29,7 @@ export class Item implements ItemInterface {
   protected updateQuality() {
     this.decreaseQuality();
 
-    if (this.isSellInExpired) {
+    if (this.isSellInExpired()) {
       this.decreaseQuality();
     }
   }
@@ -42,7 +42,7 @@ export class Item implements ItemInterface {
     this.quality = Math.min(this.quality + 1, Item.MAX_QUALITY);
   }
 
-  get isSellInExpired() {
+  protected isSellInExpired(): boolean {
     return this.sellIn < 0;
   }
 }
@@ -56,7 +56,7 @@ export class AgedBrie extends Item {
   public override updateQuality() {
     this.increaseQuality();
 
-    if (this.isSellInExpired) {
+    if (this.isSellInExpired()) {
       this.increaseQuality();
     }
   }
@@ -77,7 +77,7 @@ export class BackstagePasses extends Item {
       this.increaseQuality();
     }
 
-    if (this.isSellInExpired) {
+    if (this.isSellInExpired()) {
       this.quality = Item.MIN_QUALITY;
     }
   }
@@ -87,7 +87,7 @@ export class Conjured extends Item {
   public override updateQuality() {
     this.decreaseQuality(2);
 
-    if (this.isSellInExpired) {
+    if (this.isSellInExpired()) {
       this.decreaseQuality(2);
     }
   }
