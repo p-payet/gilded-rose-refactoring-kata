@@ -9,15 +9,15 @@ interface ItemInterface {
 // We altered the Item class, I don't really see the point of this rule.
 // The goblin can go to hell.
 export class Item implements ItemInterface {
-  static readonly MAX_QUALITY = 50;
-  static readonly MIN_QUALITY = 0;
+  protected readonly MAX_QUALITY: number = 50;
+  protected readonly MIN_QUALITY: number = 0;
 
   constructor(
     public name: string,
     public sellIn: number,
     public quality: number
   ) {
-    this.quality = Math.max(quality, Item.MIN_QUALITY);
+    this.quality = Math.max(quality, this.MIN_QUALITY);
   }
 
   public decreaseSellIn() {
@@ -35,11 +35,11 @@ export class Item implements ItemInterface {
   }
 
   protected decreaseQuality(amount = 1) {
-    this.quality = Math.max(this.quality - amount, Item.MIN_QUALITY);
+    this.quality = Math.max(this.quality - amount, this.MIN_QUALITY);
   }
 
   protected increaseQuality() {
-    this.quality = Math.min(this.quality + 1, Item.MAX_QUALITY);
+    this.quality = Math.min(this.quality + 1, this.MAX_QUALITY);
   }
 
   protected isSellInExpired(): boolean {
@@ -48,6 +48,8 @@ export class Item implements ItemInterface {
 }
 
 export class Sulfuras extends Item {
+  protected override MAX_QUALITY = 80;
+
   constructor(
     public name: string,
     public sellIn: number,
@@ -55,7 +57,7 @@ export class Sulfuras extends Item {
   ) {
     super(name, sellIn, quality);
 
-    this.quality = 80;
+    this.quality = this.MAX_QUALITY;
   }
 
   // Legendary item, quality and sellIn never change
@@ -75,7 +77,7 @@ export class AgedBrie extends Item {
 export class BackstagePasses extends Item {
   public override updateQuality() {
     if (this.isSellInExpired()) {
-      this.quality = Item.MIN_QUALITY; // Becomes worthless after the event
+      this.quality = this.MIN_QUALITY; // Becomes worthless after the event
 
       return;
     }
