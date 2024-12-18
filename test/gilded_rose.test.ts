@@ -31,16 +31,16 @@ describe("Gilded Rose", () => {
     expect(output).toMatchSnapshot();
   });
 
-  it("should foo", () => {
-    const gildedRose = new Shop(
-      [new Item("foo", 0, 0)],
-    );
-    const items = gildedRose.decreaseSellIn();
-
-    expect(items[0].name).toBe("foo");
-  });
-
   describe("Normal item", () => {
+    it("should create an item named foo", () => {
+      const gildedRose = new Shop(
+        [new Item("foo", 0, 0)],
+      );
+      const items = gildedRose.decreaseSellIn();
+  
+      expect(items[0].name).toBe("foo");
+    });
+
     it("should set quality to 0 if negative quality value is passed", () => {
       const gildedRose = new Shop([
         new Item("+1 Dexterity Vest", 15, -2),
