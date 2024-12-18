@@ -48,6 +48,16 @@ export class Item implements ItemInterface {
 }
 
 export class Sulfuras extends Item {
+  constructor(
+    public name: string,
+    public sellIn: number,
+    public quality: number
+  ) {
+    super(name, sellIn, quality);
+
+    this.quality = 80;
+  }
+
   // Legendary item, quality and sellIn never change
   public override decreaseSellIn() {}
 }

@@ -119,7 +119,7 @@ describe("Gilded Rose Shop", () => {
 
   describe("Sulfuras item", () => {
     it("should always be 80 in quality and sellIn value should never decrease", () => {
-      const shop = new Shop([sulfurasItemFactory(-7, 80)]);
+      const shop = new Shop([sulfurasItemFactory(-7, 27)]);
       const items = shop.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(-7);
