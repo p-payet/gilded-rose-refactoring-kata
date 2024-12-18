@@ -3,7 +3,7 @@ interface ItemInterface {
   sellIn: number;
   quality: number;
 
-  updateQuality(): void;
+  updateSellIn(): void;
 }
 
 // We altered the Item class, I don't really see the point of this rule.
@@ -20,9 +20,13 @@ export class Item implements ItemInterface {
     this.quality = Math.max(quality, Item.MIN_QUALITY);
   }
 
-  public updateQuality() {
+  public updateSellIn() {
     this.sellIn--;
 
+    this.updateQuality();
+  }
+
+  protected updateQuality() {
     this.decreaseQuality();
 
     if (this.isSellInExpired) {
@@ -53,13 +57,11 @@ export class Item implements ItemInterface {
 
 export class Sulfuras extends Item {
   // Legendary item, quality and sellIn never change
-  public override updateQuality() {}
+  public override updateSellIn() {}
 }
 
 export class AgedBrie extends Item {
   public override updateQuality() {
-    this.sellIn--;
-
     this.increaseQuality();
 
     if (this.isSellInExpired) {
@@ -73,8 +75,6 @@ export class BackstagePasses extends Item {
   private sellInTenDays = 10;
 
   public override updateQuality() {
-    this.sellIn--;
-
     this.increaseQuality();
 
     if (this.sellIn <= this.sellInTenDays) {
@@ -93,8 +93,6 @@ export class BackstagePasses extends Item {
 
 export class Conjured extends Item {
   public override updateQuality() {
-    this.sellIn--;
-
     this.decreaseQuality();
 
     if (this.isSellInExpired) {
@@ -113,8 +111,8 @@ export class Shop {
     this.items = items;
   }
 
-  updateQuality() {
-    this.items.forEach((item) => item.updateQuality());
+  updateSellIn() {
+    this.items.forEach((item) => item.updateSellIn());
 
     return this.items;
   }
