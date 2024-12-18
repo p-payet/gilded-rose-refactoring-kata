@@ -3,7 +3,7 @@ interface ItemInterface {
   sellIn: number;
   quality: number;
 
-  updateSellIn(): void;
+  decreaseSellIn(): void;
 }
 
 // We altered the Item class, I don't really see the point of this rule.
@@ -20,7 +20,7 @@ export class Item implements ItemInterface {
     this.quality = Math.max(quality, Item.MIN_QUALITY);
   }
 
-  public updateSellIn() {
+  public decreaseSellIn() {
     this.sellIn--;
 
     this.updateQuality();
@@ -49,7 +49,7 @@ export class Item implements ItemInterface {
 
 export class Sulfuras extends Item {
   // Legendary item, quality and sellIn never change
-  public override updateSellIn() {}
+  public override decreaseSellIn() {}
 }
 
 export class AgedBrie extends Item {
@@ -96,8 +96,8 @@ export class Conjured extends Item {
 export class Shop {
   constructor(public items: Array<ItemInterface> = []) {}
 
-  updateSellIn() {
-    this.items.forEach((item) => item.updateSellIn());
+  decreaseSellIn() {
+    this.items.forEach((item) => item.decreaseSellIn());
 
     return this.items;
   }

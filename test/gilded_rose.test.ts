@@ -24,7 +24,7 @@ describe("Gilded Rose", () => {
       output += `-------- day ${day} --------\n`;
       output += "name, sellIn, quality\n";
       items.forEach(item => output += `${item.name}, ${item.sellIn}, ${item.quality}\n`);
-      gildedRose.updateSellIn();
+      gildedRose.decreaseSellIn();
       output += "\n";
     }
 
@@ -35,7 +35,7 @@ describe("Gilded Rose", () => {
     const gildedRose = new Shop(
       [new Item("foo", 0, 0)],
     );
-    const items = gildedRose.updateSellIn();
+    const items = gildedRose.decreaseSellIn();
 
     expect(items[0].name).toBe("foo");
   });
@@ -45,7 +45,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new Item("+1 Dexterity Vest", 15, -2),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(14);
       expect(items[0].quality).toBe(0);
@@ -55,7 +55,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new Item("+5 Dexterity Vest", 10, 20),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(9);
       expect(items[0].quality).toBe(19);
@@ -65,7 +65,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new Item("+5 Dexterity Vest", 0, 20),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(-1);
       expect(items[0].quality).toBe(18);
@@ -76,7 +76,7 @@ describe("Gilded Rose", () => {
         new Item("+5 Dexterity Vest", 5, 0),
         new Item("Elixir of the Mongoose", 0, 1),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(4);
       expect(items[0].quality).toBe(0);
@@ -91,7 +91,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new AgedBrie("Aged Brie", 2, 7),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(1);
       expect(items[0].quality).toBe(8);
@@ -101,7 +101,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new AgedBrie("Aged Brie", 0, 49),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(-1);
       expect(items[0].quality).toBe(50);
@@ -113,7 +113,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new Sulfuras("Sulfuras, Hand of Ragnaros", -7, 80),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(-7);
       expect(items[0].quality).toBe(80);
@@ -125,7 +125,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new BackstagePasses("Backstage passes to a TAFKAL80ETC concert", 15, 20),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(14);
       expect(items[0].quality).toBe(21);
@@ -135,7 +135,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new BackstagePasses("Backstage passes to a TAFKAL80ETC concert", 0, 20),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(-1);
       expect(items[0].quality).toBe(0);
@@ -145,7 +145,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new BackstagePasses("Backstage passes to a TAFKAL80ETC concert", 10, 20),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(9);
       expect(items[0].quality).toBe(22);
@@ -155,7 +155,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new BackstagePasses("Backstage passes to a TAFKAL80ETC concert", 5, 20),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(4);
       expect(items[0].quality).toBe(23);
@@ -165,7 +165,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new BackstagePasses("Backstage passes to a TAFKAL80ETC concert", 5, 48),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(4);
       expect(items[0].quality).toBe(50);
@@ -178,7 +178,7 @@ describe("Gilded Rose", () => {
         new Conjured("conjured", 10, 20),
         new Item("foo", 10, 20),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].quality).toBe(18);
       expect(items[1].quality).toBe(19);
@@ -188,7 +188,7 @@ describe("Gilded Rose", () => {
       const gildedRose = new Shop([
         new Conjured("conjured", 10, 0),
       ]);
-      const items = gildedRose.updateSellIn();
+      const items = gildedRose.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(9);
       expect(items[0].quality).toBe(0);
