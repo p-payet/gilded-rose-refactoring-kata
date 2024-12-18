@@ -8,6 +8,12 @@ import {
   Shop,
 } from "../src/gilded_rose";
 
+const normalItemFactory = (sellIn: number, quality: number) => new Item("+5 Dexterity Vest", sellIn, quality);
+const agedBrieItemFactory = (sellIn: number, quality: number) => new AgedBrie("Aged Brie", sellIn, quality);
+const sulfurasItemFactory = (sellIn: number, quality: number) => new Sulfuras("Sulfuras, Hand of Ragnaros", sellIn, quality);
+const backstagePassesItemFactory = (sellIn: number, quality: number) => new BackstagePasses("Backstage passes to a TAFKAL80ETC concert", sellIn, quality);
+const conjuredItemFactory = (sellIn: number, quality: number) => new Conjured("Conjured Mana Cake", sellIn, quality);
+
 const runSimulation = (items: Array<Item>, days: number): string => {
   const shop = new Shop(items);
   let output = "";
@@ -23,24 +29,19 @@ const runSimulation = (items: Array<Item>, days: number): string => {
   return output;
 }
 
-const agedBrieName = "Aged Brie";
-const sulfurasName = "Sulfuras, Hand of Ragnaros";
-const backstagePassesName = "Backstage passes to a TAFKAL80ETC concert";
-const conjuredName = "Conjured Mana Cake";
-
 describe("Gilded Rose Shop", () => {
   // Approval Testing (a.k.a: Golden Master)
   it("should match snapshot", () => {
     const items = [
-      new Item("+5 Dexterity Vest", 10, 20),
-      new AgedBrie(agedBrieName, 2, 0),
-      new Item("Elixir of the Mongoose", 5, 7),
-      new Sulfuras(sulfurasName, 0, 80),
-      new Sulfuras(sulfurasName, -1, 80),
-      new BackstagePasses(backstagePassesName, 15, 20),
-      new BackstagePasses(backstagePassesName, 10, 49),
-      new BackstagePasses(backstagePassesName, 5, 49),
-      new Conjured(conjuredName, 3, 6),
+      normalItemFactory(10, 20),
+      agedBrieItemFactory(2, 0),
+      normalItemFactory(5, 7),
+      sulfurasItemFactory(0, 80),
+      sulfurasItemFactory(-1, 80),
+      backstagePassesItemFactory(15, 20),
+      backstagePassesItemFactory(10, 49),
+      backstagePassesItemFactory(5, 49),
+      conjuredItemFactory(3, 6),
     ];
     const output = runSimulation(items, 30);
 
@@ -48,17 +49,17 @@ describe("Gilded Rose Shop", () => {
   });
 
   describe("Normal item", () => {
-    it("should create an item named foo", () => {
-      const shop = new Shop([new Item("foo", 0, 0)]);
+    it("should create an item named '+5 Dexterity Vest'", () => {
+      const shop = new Shop([normalItemFactory(0, 0)]);
       const items = shop.decreaseSellIn();
-  
-      expect(items[0].name).toBe("foo");
+
+      expect(items[0].name).toBe("+5 Dexterity Vest");
     });
 
     it("should never lower quality below 0", () => {
       const shop = new Shop([
-        new Item("+5 Dexterity Vest", 5, 0),
-        new Item("Elixir of the Mongoose", 0, 1),
+        normalItemFactory(5, 0),
+        normalItemFactory(0, 1),
       ]);
       const items = shop.decreaseSellIn();
 
@@ -72,17 +73,17 @@ describe("Gilded Rose Shop", () => {
     const testCases = [
       {
         name: "set quality to 0 if negative quality value is passed",
-        item: new Item("+1 Dexterity Vest", 15, -2),
+        item: normalItemFactory(15, -2),
         expected: { sellIn: 14, quality: 0 },
       },
       {
         name: "lower sellIn and quality value at the end of the day",
-        item: new Item("+5 Dexterity Vest", 10, 20),
+        item: normalItemFactory(10, 20),
         expected: { sellIn: 9, quality: 19 },
       },
       {
         name: "lower quality twice as fast when sellIn is inferior to 0",
-        item: new Item("+5 Dexterity Vest", 0, 20),
+        item: normalItemFactory(0, 20),
         expected: { sellIn: -1, quality: 18 },
       },
     ];
@@ -100,7 +101,7 @@ describe("Gilded Rose Shop", () => {
 
   describe("Aged Brie item", () => {
     it("should increase in quality at the end of the day", () => {
-      const shop = new Shop([new AgedBrie(agedBrieName, 2, 7)]);
+      const shop = new Shop([agedBrieItemFactory(2, 7)]);
       const items = shop.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(1);
@@ -108,7 +109,7 @@ describe("Gilded Rose Shop", () => {
     });
 
     it("should never exceed 50 in quality", () => {
-      const shop = new Shop([new AgedBrie(agedBrieName, 0, 49)]);
+      const shop = new Shop([agedBrieItemFactory(0, 49)]);
       const items = shop.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(-1);
@@ -118,7 +119,7 @@ describe("Gilded Rose Shop", () => {
 
   describe("Sulfuras item", () => {
     it("should always be 80 in quality and sellIn value should never decrease", () => {
-      const shop = new Shop([new Sulfuras(sulfurasName, -7, 80)]);
+      const shop = new Shop([sulfurasItemFactory(-7, 80)]);
       const items = shop.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(-7);
@@ -130,27 +131,27 @@ describe("Gilded Rose Shop", () => {
     const testCases = [
       {
         name: "increase in quality at the end of the day, when sellIn value is superior or equal to 0",
-        item: new BackstagePasses(backstagePassesName, 15, 20),
+        item: backstagePassesItemFactory(15, 20),
         expected: { sellIn: 14, quality: 21 },
       },
       {
         name: "drop quality to 0, when sellIn value is inferior to 0",
-        item: new BackstagePasses(backstagePassesName, 0, 20),
+        item: backstagePassesItemFactory(0, 20),
         expected: { sellIn: -1, quality: 0 },
       },
       {
         name: "increase quality by 2, when sellIn value is inferior or equal to 10",
-        item: new BackstagePasses(backstagePassesName, 10, 20),
+        item: backstagePassesItemFactory(10, 20),
         expected: { sellIn: 9, quality: 22 },
       },
       {
         name: "increase quality by 3, when sellInvalue is inferior or equal to 5",
-        item: new BackstagePasses(backstagePassesName, 5, 20),
+        item: backstagePassesItemFactory(5, 20),
         expected: { sellIn: 4, quality: 23 },
       },
       {
         name: "never exceed 50 in quality",
-        item: new BackstagePasses(backstagePassesName, 5, 48),
+        item: backstagePassesItemFactory(5, 48),
         expected: { sellIn: 4, quality: 50 },
       },
     ];
@@ -169,8 +170,8 @@ describe("Gilded Rose Shop", () => {
   describe("Conjured item", () => {
     it("should degrade in quality twice as fast as normal items", () => {
       const shop = new Shop([
-        new Conjured(conjuredName, 10, 20),
-        new Item("foo", 10, 20),
+        conjuredItemFactory(10, 20),
+        normalItemFactory(10, 20),
       ]);
       const items = shop.decreaseSellIn();
 
@@ -179,7 +180,7 @@ describe("Gilded Rose Shop", () => {
     });
 
     it("should never lower quality below 0", () => {
-      const shop = new Shop([new Conjured(conjuredName, 10, 0)]);
+      const shop = new Shop([conjuredItemFactory(10, 0)]);
       const items = shop.decreaseSellIn();
 
       expect(items[0].sellIn).toBe(9);
