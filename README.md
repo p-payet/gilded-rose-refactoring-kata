@@ -33,5 +33,5 @@ npm run test:coverage
 To update Approval Test snapshot
 
 ```sh
-"test:update-snapshot": "jest --updateSnapshot"
+npm run test:update-snapshot
 ```
